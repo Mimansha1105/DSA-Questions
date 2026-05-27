@@ -1,22 +1,19 @@
 class Solution {
 public:
  int solve(vector<int>& arr, int &n){
-          vector<int>currow(n+1,0);
-          vector<int>nextrow(n+1, 0);
-              for(int curr=n-1; curr>=0; curr--){
-                  for(int prev=curr-1;prev>=-1; prev--){
-                       int take=0;
-                        if(prev==-1 || arr[curr]>arr[prev]){
-                         take=1+nextrow[ curr+1];
-                            }
-          
-                       int nottake=0+nextrow[prev+1];
-                       currow[prev+1]= max(take,nottake);
-                  }
-                  nextrow=currow;
-              }
-              return nextrow[0];
-    
+if(n==0)
+return 0;
+vector<int>ans;
+ans.push_back(arr[0]);
+for(int i=1; i<n; i++){
+    if(arr[i]>ans.back())
+    ans.push_back(arr[i]);
+    else{
+        int index=lower_bound(ans.begin(),ans.end(),arr[i])-ans.begin();
+        ans[index]=arr[i];
+    }
+}
+return ans.size();
   }
     int lengthOfLIS(vector<int>& nums) {
        int n=nums.size();
