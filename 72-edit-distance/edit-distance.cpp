@@ -1,35 +1,38 @@
 class Solution {
 public:
 int solve( string &a, string &b, int i, int j){
-    vector<vector<int>>dp(a.length()+1,  vector<int>(b.length()+1,0));
+   // vector<vector<int>>dp(a.length()+1,  vector<int>(b.length()+1,0));
+   vector<int>curr(b.length()+1,0);
+     vector<int>next(b.length()+1,0);
     for(int j=0; j<b.length();j++){
-        dp[a.length()][j]=b.length()-j;
+      next[j]=b.length()-j;
     }
-     for(int i=0; i<a.length();i++){
-        dp[i][b.length()]=a.length()-i;
-    }
-
 for(int i=a.length()-1; i>=0; i--){
     for(int j=b.length()-1; j>=0; j--){
-
+  curr[b.length()]=a.length()-i;
     int ans=0;
     if(a[i]==b[j]){
-        ans =dp[ i+1][j+1];
+        ans =next[j+1];
     }
     else{
-        int insertans=1+dp[i][j+1];
-        int deleteans= 1+dp[i+1][j];
-        int replaceans=1+dp[i+1][j+1];
+        int insertans=1+curr[j+1];
+        int deleteans= 1+next[j];
+        int replaceans=1+next[j+1];
         ans=min(insertans, min(deleteans, replaceans));
     }
-       dp[i][j]=ans;
+       curr[j]=ans;
 
     }
+    next=curr;
 }
 
-return dp[0][0];
+return next[0];
 }
     int minDistance(string word1, string word2) {
+        if(word1.length()==0)
+        return word2.length();
+        if(word2.length()==0)
+        return word1.length();
         return solve(word1, word2, 0,0);
     }
 };
